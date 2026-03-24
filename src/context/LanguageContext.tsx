@@ -109,25 +109,24 @@ const translations = {
   },
 } as const
 
-type Translations = typeof translations['en']
 
 interface LanguageContextValue {
   lang: Lang
   setLang: (lang: Lang) => void
-  t: Translations
+  t: Record<string, string>
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
   lang: 'es',
   setLang: () => {},
-  t: translations.es,
+  t: translations.es as unknown as Record<string, string>,
 })
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>('es')
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
+    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] as unknown as Record<string, string> }}>
       {children}
     </LanguageContext.Provider>
   )
