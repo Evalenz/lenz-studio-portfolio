@@ -14,7 +14,7 @@ export default function HeroSection() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 3.2 })
 
-      tl.fromTo('.hero-3d', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'power2.out' })
+      tl.fromTo('.hero-3d', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' })
       tl.fromTo('.hero-title-line', { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'power3.out' }, '-=1.2')
       tl.fromTo('.hero-phrase', { opacity: 0 }, { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.6')
       tl.fromTo('.hero-meta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.08, duration: 0.6, ease: 'power3.out' }, '-=0.5')
@@ -30,29 +30,29 @@ export default function HeroSection() {
       id="hero"
       className="relative h-screen w-full overflow-hidden"
     >
-      {/* 3D Chrome Ring — full screen background, no clipping */}
-      <div className="hero-3d opacity-0 absolute inset-0 z-0">
+      {/* 3D Chrome Ring — positioned to the right, not full screen */}
+      <div className="hero-3d opacity-0 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[30%] md:-translate-x-[20%] w-[80vh] h-[80vh] max-w-[700px] max-h-[700px] z-[2]">
         <Suspense fallback={
           <div className="w-full h-full flex items-center justify-center">
-            <div className="w-40 h-40 rounded-full border border-[#1a1a1a]/5 animate-pulse" />
+            <div className="w-32 h-32 rounded-full border border-[#1a1a1a]/5 animate-pulse" />
           </div>
         }>
           <ChromeRing />
         </Suspense>
       </div>
 
-      {/* "Bold Ideas" phrase — large, faded, behind content */}
-      <div className="hero-phrase opacity-0 absolute top-28 md:top-32 left-6 md:left-12 right-6 md:right-12 z-[1] pointer-events-none">
-        <h2 className="font-display font-bold text-[#1a1a1a]/[0.04] text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] tracking-tighter text-center">
+      {/* "Bold Ideas" phrase — large, faded, behind everything */}
+      <div className="hero-phrase opacity-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1] pointer-events-none w-full px-6">
+        <h2 className="font-display font-bold text-[#1a1a1a]/[0.03] text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] tracking-tighter text-center select-none">
           Bold Ideas That<br />Start With Vision.
         </h2>
       </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 h-full max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col justify-end pb-16 md:pb-20 pt-20">
+      <div className="relative z-10 h-full max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col justify-end pb-16 md:pb-20 pt-20 pointer-events-none">
 
-        {/* Main title + info — bottom left */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        {/* Main title + info — bottom */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pointer-events-auto">
           {/* Left block */}
           <div className="flex flex-col gap-5">
             <div>

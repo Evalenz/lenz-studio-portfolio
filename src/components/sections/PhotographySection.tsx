@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { gsap } from '../../lib/gsap'
 import { photos, type PhotoCategory } from '../../data/photography'
 import { useLanguage } from '../../context/LanguageContext'
-import ChromeDecor from '../ui/ChromeDecor'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import { cn } from '../../lib/utils'
@@ -47,10 +46,10 @@ export default function PhotographySection() {
 
   return (
     <section ref={sectionRef} id="photography" className="relative py-32 md:py-40 px-6 md:px-12 overflow-hidden">
-      {/* Chrome pill decoration */}
-      <ChromeDecor shape="pill" className="absolute -top-8 right-[10%] w-36 h-36 opacity-40" />
-
       <div className="max-w-7xl mx-auto relative">
+        {/* Subtle top divider */}
+        <div className="w-12 h-[1px] bg-[#1a1a1a]/10 mb-16" />
+
         <h2 className="photo-heading font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#1a1a1a] mb-12">
           {t.photoHeading}
         </h2>

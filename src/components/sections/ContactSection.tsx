@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from '../../lib/gsap'
 import { Send, ArrowUpRight } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
-import ChromeDecor from '../ui/ChromeDecor'
 
 function InstagramIcon({ size = 18 }: { size?: number }) {
   return (
@@ -33,11 +32,10 @@ export default function ContactSection() {
 
   return (
     <section ref={sectionRef} id="contact" className="relative py-32 md:py-40 px-6 md:px-12 overflow-hidden">
-      {/* Chrome decoration */}
-      <ChromeDecor shape="torus" className="absolute top-10 -right-10 w-44 h-44 md:w-60 md:h-60 opacity-50" />
-      <ChromeDecor shape="sphere" className="absolute -bottom-16 left-1/4 w-32 h-32 opacity-30" />
-
       <div className="max-w-7xl mx-auto relative">
+        {/* Subtle top divider */}
+        <div className="w-12 h-[1px] bg-[#1a1a1a]/10 mb-16" />
+
         <h2 className="contact-heading font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#1a1a1a] mb-16">
           {t.contactHeading1} <span className="text-[#999]">{t.contactHeading2}</span>
         </h2>
