@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { gsap } from '../lib/gsap'
 import { useLanguage } from '../context/LanguageContext'
 import { portfolioCategories } from '../data/portfolioCategories'
+import { listPhotos } from '../lib/supabase'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
@@ -12,25 +13,34 @@ export default function GalleryPage() {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
+  const [photos, setPhotos] = useState<string[]>([])
+  const [loading, setLoading] = useState(true)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
   const cat = portfolioCategories.find((c) => c.slug === category)
-  const photos = cat?.photos ?? []
   const label = cat ? (t[cat.labelKey] || cat.slug) : category || ''
 
+  // Load photos from Supabase Storage
   useEffect(() => {
     window.scrollTo(0, 0)
-    // Animate gallery items in
-    const timeout = setTimeout(() => {
-      gsap.fromTo(
-        '.gallery-item',
-        { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out' }
-      )
-    }, 100)
-    return () => clearTimeout(timeout)
-  }, [category])
+    if (!cat) return
+
+    setLoading(true)
+    listPhotos(cat.folder).then((urls) => {
+      setPhotos(urls)
+      setLoading(false)
+
+      // Animate items in after render
+      setTimeout(() => {
+        gsap.fromTo(
+          '.gallery-item',
+          { opacity: 0, y: 40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out' }
+        )
+      }, 100)
+    })
+  }, [category, cat])
 
   const openLightbox = useCallback((index: number) => {
     setLightboxIndex(index)
@@ -92,7 +102,11 @@ export default function GalleryPage() {
             {label}
           </h1>
 
-          {photos.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center min-h-[40vh]">
+              <Loader2 className="animate-spin text-[#999]" size={32} />
+            </div>
+          ) : photos.length === 0 ? (
             <div className="flex items-center justify-center min-h-[40vh]">
               <p className="text-[#999] font-body text-lg">{t.galleryEmpty}</p>
             </div>
@@ -127,7 +141,6 @@ export default function GalleryPage() {
           className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
           onClick={closeLightbox}
         >
-          {/* Close button */}
           <button
             className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-10"
             onClick={closeLightbox}
@@ -136,7 +149,6 @@ export default function GalleryPage() {
             <X size={28} />
           </button>
 
-          {/* Previous */}
           <button
             className="absolute left-4 md:left-8 text-white/40 hover:text-white transition-colors z-10"
             onClick={(e) => { e.stopPropagation(); goPrev() }}
@@ -145,7 +157,6 @@ export default function GalleryPage() {
             <ChevronLeft size={40} />
           </button>
 
-          {/* Image */}
           <img
             src={photos[lightboxIndex]}
             alt={`${label} ${lightboxIndex + 1}`}
@@ -153,7 +164,6 @@ export default function GalleryPage() {
             onClick={(e) => e.stopPropagation()}
           />
 
-          {/* Next */}
           <button
             className="absolute right-4 md:right-8 text-white/40 hover:text-white transition-colors z-10"
             onClick={(e) => { e.stopPropagation(); goNext() }}
@@ -162,7 +172,6 @@ export default function GalleryPage() {
             <ChevronRight size={40} />
           </button>
 
-          {/* Counter */}
           <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-sm font-body tracking-wider">
             {lightboxIndex + 1} / {photos.length}
           </span>
