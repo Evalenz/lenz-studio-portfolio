@@ -14,6 +14,7 @@ export default function DesignSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.fromTo('.design-section-num', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1, scrollTrigger: { trigger: '.design-section-num', start: 'top 85%' } })
       gsap.fromTo('.design-heading', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: '.design-heading', start: 'top 85%' } })
 
       if (!isMobile && scrollContainerRef.current && containerRef.current) {
@@ -33,6 +34,13 @@ export default function DesignSection() {
     <section ref={sectionRef} id="design" className="relative py-32 md:py-40">
       <div className="px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
+          {/* Section number */}
+          <div className="design-section-num opacity-0 flex items-center gap-4 mb-12">
+            <span className="font-display text-[80px] md:text-[120px] font-bold leading-none text-[#1a1a1a]/[0.06] select-none">
+              04
+            </span>
+          </div>
+
           <h2 className="design-heading font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#1a1a1a] mb-4">{t.designHeading}</h2>
           <p className="text-[#999] text-base md:text-lg font-body mb-12 max-w-xl">{t.designSubtitle}</p>
         </div>

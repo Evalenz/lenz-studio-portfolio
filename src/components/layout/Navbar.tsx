@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useSmoothScroll } from '../../context/SmoothScrollContext'
 import { useLanguage } from '../../context/LanguageContext'
 import { gsap } from '../../lib/gsap'
 import { cn } from '../../lib/utils'
 
-export default function Navbar() {
+interface NavbarProps {
+  transparent?: boolean
+}
+
+export default function Navbar({ transparent = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { scrollTo } = useSmoothScroll()
   const { lang, setLang, t } = useLanguage()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const isHome = location.pathname === '/'
 
   const navLinks = [
     { id: 'about', label: t.about },
@@ -36,9 +45,24 @@ export default function Navbar() {
   }, [menuOpen])
 
   const handleNavClick = (id: string) => {
-    scrollTo(`#${id}`)
+    if (isHome) {
+      scrollTo(`#${id}`)
+    } else {
+      navigate(`/#${id}`)
+    }
     setMenuOpen(false)
   }
+
+  const handleLogoClick = () => {
+    if (isHome) {
+      scrollTo(0)
+    } else {
+      navigate('/')
+    }
+  }
+
+  // Determine colors: if transparent mode and NOT scrolled, use white text
+  const useWhiteText = transparent && !scrolled
 
   return (
     <>
@@ -47,13 +71,18 @@ export default function Navbar() {
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
           scrolled
             ? 'bg-[#f5f5f0]/80 backdrop-blur-xl border-b border-[#1a1a1a]/5'
-            : 'bg-transparent'
+            : transparent
+              ? 'bg-transparent'
+              : 'bg-transparent'
         )}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
           <button
-            onClick={() => scrollTo(0)}
-            className="font-display text-xl font-bold tracking-tight text-[#1a1a1a] hover:opacity-60 transition-opacity"
+            onClick={handleLogoClick}
+            className={cn(
+              'font-display text-xl font-bold tracking-tight transition-opacity hover:opacity-60',
+              useWhiteText ? 'text-white' : 'text-[#1a1a1a]'
+            )}
             data-cursor="hover"
           >
             LENZ STUDIO<sup className="text-[8px] ml-0.5 align-super">&reg;</sup>
@@ -65,7 +94,12 @@ export default function Navbar() {
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className="text-sm text-[#1a1a1a]/50 hover:text-[#1a1a1a] transition-colors tracking-wide font-body"
+                className={cn(
+                  'text-sm tracking-wide font-body transition-colors',
+                  useWhiteText
+                    ? 'text-white/60 hover:text-white'
+                    : 'text-[#1a1a1a]/50 hover:text-[#1a1a1a]'
+                )}
                 data-cursor="hover"
               >
                 {link.label}
@@ -73,14 +107,21 @@ export default function Navbar() {
             ))}
 
             {/* Language switcher */}
-            <div className="flex items-center gap-1 ml-4 border border-[#1a1a1a]/10 rounded-full overflow-hidden">
+            <div className={cn(
+              'flex items-center gap-1 ml-4 border rounded-full overflow-hidden',
+              useWhiteText ? 'border-white/20' : 'border-[#1a1a1a]/10'
+            )}>
               <button
                 onClick={() => setLang('es')}
                 className={cn(
                   'px-3 py-1.5 text-xs font-body tracking-wide transition-all',
                   lang === 'es'
-                    ? 'bg-[#1a1a1a] text-[#f5f5f0]'
-                    : 'text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70'
+                    ? useWhiteText
+                      ? 'bg-white text-[#1a1a1a]'
+                      : 'bg-[#1a1a1a] text-[#f5f5f0]'
+                    : useWhiteText
+                      ? 'text-white/40 hover:text-white/70'
+                      : 'text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70'
                 )}
                 data-cursor="hover"
               >
@@ -91,8 +132,12 @@ export default function Navbar() {
                 className={cn(
                   'px-3 py-1.5 text-xs font-body tracking-wide transition-all',
                   lang === 'en'
-                    ? 'bg-[#1a1a1a] text-[#f5f5f0]'
-                    : 'text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70'
+                    ? useWhiteText
+                      ? 'bg-white text-[#1a1a1a]'
+                      : 'bg-[#1a1a1a] text-[#f5f5f0]'
+                    : useWhiteText
+                      ? 'text-white/40 hover:text-white/70'
+                      : 'text-[#1a1a1a]/40 hover:text-[#1a1a1a]/70'
                 )}
                 data-cursor="hover"
               >
@@ -104,7 +149,10 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden text-[#1a1a1a] p-2"
+            className={cn(
+              'md:hidden p-2',
+              useWhiteText ? 'text-white' : 'text-[#1a1a1a]'
+            )}
             data-cursor="hover"
             aria-label="Toggle menu"
           >

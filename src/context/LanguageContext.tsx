@@ -12,14 +12,14 @@ const translations = {
     contact: 'Contact',
 
     // Hero
-    heroTitle1: 'Bold Ideas That',
-    heroTitle2: 'Start With Vision.',
+    heroTagline: 'Creative Studio — Est. 2020',
+    heroTitle: 'BOLD IDEAS THAT START WITH VISION',
     heroSubtitle: 'We help transform moments into eternal emotions through photography, filming, and creative design.',
     heroCta: 'Get In Touch',
-    heroBadge: 'Photography / Filming / Designer',
+    heroBadge: 'Photography / Filming / Design',
 
     // About
-    aboutHeading: 'Who is',
+    aboutHeading: 'What is',
     aboutP1: 'LENZ STUDIO is not just a photography and video studio. We are tireless creators, artists who find in each project the opportunity to transform moments into eternal emotions. With over 4 years of experience in the world of image, backed by a lifetime of love for cameras and visual art.',
     aboutP2: 'Photography has always been our refuge, our way of connecting with the world and freezing emotions in time. That camera was our window to the world and our tool to capture the authenticity that characterizes each of our works.',
     aboutP3: 'With technical training in Lighting, Capture and Image Processing, we combine professional knowledge with natural creativity to perfect our art and confidently tackle projects of all kinds.',
@@ -36,6 +36,20 @@ const translations = {
     weddings: 'Weddings',
     eventsSports: 'Events & Sports',
     view: 'View',
+
+    // Photography Categories
+    catInmuebles: 'Real Estate',
+    catClubPorsche: 'Porsche Club',
+    catEventos: 'Events',
+    catDeportes: 'Sports',
+    catBodas: 'Weddings',
+    catRetrato: 'Portrait',
+    catNoche: 'Night',
+    catCoches: 'Cars',
+
+    // Gallery
+    galleryBack: 'Back',
+    galleryEmpty: 'Photos coming soon',
 
     // Video
     videoHeading: 'Filming',
@@ -54,6 +68,15 @@ const translations = {
     yourEmail: 'Your Email',
     tellUs: 'Tell us about your project...',
     sendMessage: 'Send Message',
+
+    // Admin
+    adminTitle: 'Admin Panel',
+    adminLogin: 'Login',
+    adminPassword: 'Password',
+    adminUpload: 'Upload Photos',
+    adminCategory: 'Category',
+    adminSelectFiles: 'Select Files',
+    adminLogout: 'Logout',
   },
   es: {
     // Nav
@@ -64,14 +87,14 @@ const translations = {
     contact: 'Contacto',
 
     // Hero
-    heroTitle1: 'Ideas Audaces Que',
-    heroTitle2: 'Nacen Con Vision.',
+    heroTagline: 'Estudio Creativo — Est. 2020',
+    heroTitle: 'IDEAS AUDACES QUE NACEN CON VISION',
     heroSubtitle: 'Transformamos momentos en emociones eternas a traves de la fotografia, el video y el diseno creativo.',
     heroCta: 'Contactanos',
     heroBadge: 'Fotografia / Video / Diseno',
 
     // About
-    aboutHeading: 'Quienes somos en',
+    aboutHeading: 'Que es',
     aboutP1: 'LENZ STUDIO no es solo un estudio de fotografia y video. Somos creadores incansables, artistas que encuentran en cada proyecto la oportunidad de transformar momentos en emociones eternas. Con mas de 4 anos de experiencia en el mundo de la imagen, respaldados por toda una vida de amor por las camaras y el arte visual.',
     aboutP2: 'Desde siempre, la fotografia fue nuestro refugio, nuestra manera de conectar con el mundo y de congelar emociones en el tiempo. Esa camara fue nuestra ventana al mundo y nuestra herramienta para captar la autenticidad que caracteriza cada uno de nuestros trabajos.',
     aboutP3: 'Con formacion tecnica en Iluminacion, Captacion y Tratamiento de la Imagen, combinamos conocimiento profesional con creatividad natural para perfeccionar nuestro arte y afrontar con confianza proyectos de todo tipo.',
@@ -88,6 +111,20 @@ const translations = {
     weddings: 'Bodas',
     eventsSports: 'Eventos y Deportes',
     view: 'Ver',
+
+    // Photography Categories
+    catInmuebles: 'Inmuebles',
+    catClubPorsche: 'Club Porsche',
+    catEventos: 'Eventos',
+    catDeportes: 'Deportes',
+    catBodas: 'Bodas',
+    catRetrato: 'Retrato',
+    catNoche: 'Noche',
+    catCoches: 'Coches',
+
+    // Gallery
+    galleryBack: 'Volver',
+    galleryEmpty: 'Fotos proximamente',
 
     // Video
     videoHeading: 'Video',
@@ -106,6 +143,15 @@ const translations = {
     yourEmail: 'Tu Email',
     tellUs: 'Cuentanos sobre tu proyecto...',
     sendMessage: 'Enviar Mensaje',
+
+    // Admin
+    adminTitle: 'Panel de Admin',
+    adminLogin: 'Entrar',
+    adminPassword: 'Contrasena',
+    adminUpload: 'Subir Fotos',
+    adminCategory: 'Categoria',
+    adminSelectFiles: 'Seleccionar Archivos',
+    adminLogout: 'Cerrar Sesion',
   },
 } as const
 

@@ -24,3 +24,12 @@ dist-ssr
 *.sw?
 2AFrames-66.jpg
 .claude/settings.local.json
+.vercel
+
+# Original photo folders
+BODA/
+DEPORTE FUTBOL/
+LOGO.png
+LOGO BLANCO.png
+HERO-PORTRAIT.jpg
+hero-portrait.jpg

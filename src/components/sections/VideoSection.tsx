@@ -18,6 +18,7 @@ export default function VideoSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.fromTo('.video-section-num', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1, scrollTrigger: { trigger: '.video-section-num', start: 'top 85%' } })
       gsap.fromTo('.video-heading', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: '.video-heading', start: 'top 85%' } })
       gsap.fromTo('.video-card', { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, scrollTrigger: { trigger: '.video-grid', start: 'top 80%' } })
     }, sectionRef)
@@ -27,6 +28,13 @@ export default function VideoSection() {
   return (
     <section ref={sectionRef} id="video" className="relative py-32 md:py-40 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
+        {/* Section number */}
+        <div className="video-section-num opacity-0 flex items-center gap-4 mb-12">
+          <span className="font-display text-[80px] md:text-[120px] font-bold leading-none text-[#1a1a1a]/[0.06] select-none">
+            03
+          </span>
+        </div>
+
         <h2 className="video-heading font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#1a1a1a] mb-12">
           {t.videoHeading}
         </h2>
