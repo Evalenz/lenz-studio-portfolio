@@ -4,7 +4,7 @@ import { ArrowLeft, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { gsap } from '../lib/gsap'
 import { useLanguage } from '../context/LanguageContext'
 import { portfolioCategories } from '../data/portfolioCategories'
-import { listPhotos } from '../lib/supabase'
+import { listPhotos, type PhotoItem } from '../lib/supabase'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
@@ -13,25 +13,24 @@ export default function GalleryPage() {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
-  const [photos, setPhotos] = useState<string[]>([])
+  const [photos, setPhotos] = useState<PhotoItem[]>([])
   const [loading, setLoading] = useState(true)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [lightboxLoading, setLightboxLoading] = useState(false)
 
   const cat = portfolioCategories.find((c) => c.slug === category)
   const label = cat ? (t[cat.labelKey] || cat.slug) : category || ''
 
-  // Load photos from Supabase Storage
   useEffect(() => {
     window.scrollTo(0, 0)
     if (!cat) return
 
     setLoading(true)
-    listPhotos(cat.folder).then((urls) => {
-      setPhotos(urls)
+    listPhotos(cat.folder).then((items) => {
+      setPhotos(items)
       setLoading(false)
 
-      // Animate items in after render
       setTimeout(() => {
         gsap.fromTo(
           '.gallery-item',
@@ -45,6 +44,7 @@ export default function GalleryPage() {
   const openLightbox = useCallback((index: number) => {
     setLightboxIndex(index)
     setLightboxOpen(true)
+    setLightboxLoading(true)
   }, [])
 
   const closeLightbox = useCallback(() => {
@@ -52,14 +52,15 @@ export default function GalleryPage() {
   }, [])
 
   const goNext = useCallback(() => {
+    setLightboxLoading(true)
     setLightboxIndex((prev) => (prev + 1) % photos.length)
   }, [photos.length])
 
   const goPrev = useCallback(() => {
+    setLightboxLoading(true)
     setLightboxIndex((prev) => (prev - 1 + photos.length) % photos.length)
   }, [photos.length])
 
-  // Keyboard navigation for lightbox
   useEffect(() => {
     if (!lightboxOpen) return
     const handleKey = (e: KeyboardEvent) => {
@@ -71,7 +72,6 @@ export default function GalleryPage() {
     return () => window.removeEventListener('keydown', handleKey)
   }, [lightboxOpen, closeLightbox, goNext, goPrev])
 
-  // Prevent body scroll when lightbox is open
   useEffect(() => {
     if (lightboxOpen) {
       document.body.style.overflow = 'hidden'
@@ -86,7 +86,6 @@ export default function GalleryPage() {
       <Navbar />
       <main className="pt-28 pb-20 px-6 md:px-12 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Back button + title */}
           <div className="flex items-center gap-4 mb-12">
             <button
               onClick={() => navigate('/')}
@@ -111,17 +110,17 @@ export default function GalleryPage() {
               <p className="text-[#999] font-body text-lg">{t.galleryEmpty}</p>
             </div>
           ) : (
-            /* Masonry-style grid */
             <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
               {photos.map((photo, index) => (
                 <div
-                  key={photo}
+                  key={photo.name}
                   className="gallery-item opacity-0 break-inside-avoid mb-4 group relative overflow-hidden rounded-xl cursor-pointer"
                   onClick={() => openLightbox(index)}
                   data-cursor="hover"
                 >
+                  {/* Thumbnail — compressed, fast loading */}
                   <img
-                    src={photo}
+                    src={photo.thumb}
                     alt={`${label} ${index + 1}`}
                     loading="lazy"
                     className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
@@ -135,7 +134,7 @@ export default function GalleryPage() {
       </main>
       <Footer />
 
-      {/* Custom Lightbox */}
+      {/* Lightbox — loads FULL quality image */}
       {lightboxOpen && photos.length > 0 && (
         <div
           className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
@@ -157,11 +156,18 @@ export default function GalleryPage() {
             <ChevronLeft size={40} />
           </button>
 
+          {/* Full quality image */}
+          {lightboxLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-[5]">
+              <Loader2 className="animate-spin text-white/40" size={32} />
+            </div>
+          )}
           <img
-            src={photos[lightboxIndex]}
+            src={photos[lightboxIndex].full}
             alt={`${label} ${lightboxIndex + 1}`}
-            className="max-h-[85vh] max-w-[90vw] object-contain"
+            className="max-h-[85vh] max-w-[90vw] object-contain relative z-[6]"
             onClick={(e) => e.stopPropagation()}
+            onLoad={() => setLightboxLoading(false)}
           />
 
           <button
